@@ -36,6 +36,12 @@ To run the full test suite in parallel via the command line, navigate to the pro
 mvn clean test
 View Allure Report
 After the test execution is successfully finished, generate and launch the Allure dashboard by running: mvn allure:serve
+### Execute Tests
+
+**Option 2: Via Command Line (Requires global Maven installation)**
+To run the test suite from the terminal, navigate to the project root directory and execute:
+```bash
+mvn clean test
 Project Structure
 src/test/java/
  ├── pages/           # Page Object classes (encapsulated locators and actions)
