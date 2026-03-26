@@ -3,6 +3,9 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 import java.util.List;
 
 public class CheckoutStepTwoPage {
@@ -16,6 +19,7 @@ public class CheckoutStepTwoPage {
         this.driver = driver;
     }
 
+    // Collect prices of all items in the cart and calculate the total sum
     public double getCalculatedItemsSubtotal() {
         List<WebElement> pricesElements = driver.findElements(itemPrices);
         double totalSum = 0.0;
@@ -26,6 +30,7 @@ public class CheckoutStepTwoPage {
         return totalSum;
     }
 
+    // Retrieve the total subtotal price displayed on the UI
     public double getDisplayedSubtotal() {
         String text = driver.findElement(subtotalLabel).getText();
         String priceText = text.replace("Item total: $", "");
@@ -33,6 +38,8 @@ public class CheckoutStepTwoPage {
     }
 
     public void finishCheckout() {
-        driver.findElement(finishBtn).click();
+        // Explicit wait to handle fast browser transitions
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(finishBtn)).click();
     }
 }
