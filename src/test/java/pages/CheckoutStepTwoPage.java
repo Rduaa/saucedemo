@@ -19,8 +19,10 @@ public class CheckoutStepTwoPage {
         this.driver = driver;
     }
 
-    // Collect prices of all items in the cart and calculate the total sum
     public double getCalculatedItemsSubtotal() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(itemPrices));
+
         List<WebElement> pricesElements = driver.findElements(itemPrices);
         double totalSum = 0.0;
         for (WebElement element : pricesElements) {
@@ -30,7 +32,6 @@ public class CheckoutStepTwoPage {
         return totalSum;
     }
 
-    // Retrieve the total subtotal price displayed on the UI
     public double getDisplayedSubtotal() {
         String text = driver.findElement(subtotalLabel).getText();
         String priceText = text.replace("Item total: $", "");
@@ -38,8 +39,13 @@ public class CheckoutStepTwoPage {
     }
 
     public void finishCheckout() {
-        // Explicit wait to handle fast browser transitions
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(finishBtn)).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement finishButton = wait.until(ExpectedConditions.presenceOfElementLocated(finishBtn));
+
+        // Use JavaScript Executor for a guaranteed click in Chrome
+        org.openqa.selenium.JavascriptExecutor js = (org.openqa.selenium.JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", finishButton);
+
+        wait.until(ExpectedConditions.urlContains("checkout-complete"));
     }
 }

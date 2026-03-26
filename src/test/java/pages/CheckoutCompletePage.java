@@ -2,6 +2,9 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 public class CheckoutCompletePage {
     private WebDriver driver;
@@ -13,6 +16,10 @@ public class CheckoutCompletePage {
     }
 
     public String getCompleteMessage() {
+        // Explicit wait for the header to appear
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(completeHeader));
+
         return driver.findElement(completeHeader).getText();
     }
 }
