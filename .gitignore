@@ -1,0 +1,12 @@
+# Compiled class file
+*.class
+
+# Maven
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Allure
+allure-results/
