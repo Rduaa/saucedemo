@@ -7,7 +7,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-import java.time.Duration;
 
 public class BaseTest {
     protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -22,8 +21,7 @@ public class BaseTest {
         }
 
         getDriver().manage().window().maximize();
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        getDriver().get("https://www.saucedemo.com/");
+        getDriver().get(TestData.BASE_URL);
     }
 
     public WebDriver getDriver() {

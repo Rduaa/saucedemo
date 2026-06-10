@@ -10,27 +10,20 @@ public class CheckoutTests extends BaseTest {
     public void singleItemCheckoutTest() {
         String product = "Sauce Labs Backpack";
 
-        // 1. Perform login
-        new LoginPage(getDriver()).login("standard_user", "secret_sauce");
+        new LoginPage(getDriver()).login(TestData.USERNAME, TestData.PASSWORD);
 
-        // 2. Add 1 item to the cart and navigate to it
         InventoryPage inventory = new InventoryPage(getDriver());
         inventory.addProductToCart(product);
         inventory.goToCart();
 
-        // 3. Validate the cart and proceed to checkout
         CartPage cart = new CartPage(getDriver());
         Assert.assertTrue(cart.isProductPresent(product), "Product is not in the cart!");
         cart.proceedToCheckout();
 
-        // 4. Fill in the form
-        new CheckoutStepOnePage(getDriver()).fillFormAndContinue("Ivan", "Ivanov", "12345");
+        new CheckoutStepOnePage(getDriver()).fillFormAndContinue(TestData.FIRST_NAME, TestData.LAST_NAME, TestData.ZIP_CODE);
 
-        // 5. Complete the purchase
-        CheckoutStepTwoPage stepTwo = new CheckoutStepTwoPage(getDriver());
-        stepTwo.finishCheckout();
+        new CheckoutStepTwoPage(getDriver()).finishCheckout();
 
-        // 6. Check the final success message
         CheckoutCompletePage completePage = new CheckoutCompletePage(getDriver());
         Assert.assertEquals(completePage.getCompleteMessage(), "Thank you for your order!");
     }
@@ -40,7 +33,7 @@ public class CheckoutTests extends BaseTest {
         String product1 = "Sauce Labs Backpack";
         String product2 = "Sauce Labs Bike Light";
 
-        new LoginPage(getDriver()).login("standard_user", "secret_sauce");
+        new LoginPage(getDriver()).login(TestData.USERNAME, TestData.PASSWORD);
 
         InventoryPage inventory = new InventoryPage(getDriver());
         inventory.addProductToCart(product1);
@@ -52,11 +45,9 @@ public class CheckoutTests extends BaseTest {
         Assert.assertTrue(cart.isProductPresent(product2), "Product 2 is missing!");
         cart.proceedToCheckout();
 
-        new CheckoutStepOnePage(getDriver()).fillFormAndContinue("Jane", "Doe", "54321");
+        new CheckoutStepOnePage(getDriver()).fillFormAndContinue(TestData.FIRST_NAME, TestData.LAST_NAME, TestData.ZIP_CODE);
 
         CheckoutStepTwoPage stepTwo = new CheckoutStepTwoPage(getDriver());
-
-        // Main feature of UC-2: Price validation (sum of items == total sum on screen)
         double calculatedSum = stepTwo.getCalculatedItemsSubtotal();
         double displayedSum = stepTwo.getDisplayedSubtotal();
         Assert.assertEquals(calculatedSum, displayedSum, "Calculated sum does not match the displayed subtotal!");
