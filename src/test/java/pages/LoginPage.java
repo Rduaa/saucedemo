@@ -1,7 +1,9 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
     private By usernameInput = By.cssSelector("#user-name");
@@ -12,9 +14,11 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Log in as '{0}'")
     public void login(String user, String pass) {
-        driver.findElement(usernameInput).sendKeys(user);
-        driver.findElement(passwordInput).sendKeys(pass);
-        driver.findElement(loginBtn).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput)).sendKeys(user);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).sendKeys(pass);
+        jsClick(loginBtn);
+        wait.until(ExpectedConditions.urlContains("inventory"));
     }
 }

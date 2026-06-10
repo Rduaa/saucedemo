@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +17,7 @@ public class CheckoutStepTwoPage extends BasePage {
         super(driver);
     }
 
+    @Step("Calculate items subtotal from displayed prices")
     public double getCalculatedItemsSubtotal() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(itemPrices));
         List<WebElement> pricesElements = driver.findElements(itemPrices);
@@ -26,13 +28,15 @@ public class CheckoutStepTwoPage extends BasePage {
         return totalSum;
     }
 
+    @Step("Read displayed subtotal label")
     public double getDisplayedSubtotal() {
-        String text = driver.findElement(subtotalLabel).getText();
+        String text = wait.until(ExpectedConditions.visibilityOfElementLocated(subtotalLabel)).getText();
         return Double.parseDouble(text.replace("Item total: $", ""));
     }
 
+    @Step("Finish checkout")
     public void finishCheckout() {
-        WebElement finishButton = wait.until(ExpectedConditions.presenceOfElementLocated(finishBtn));
+        WebElement finishButton = wait.until(ExpectedConditions.elementToBeClickable(finishBtn));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", finishButton);
         wait.until(ExpectedConditions.urlContains("checkout-complete"));
     }

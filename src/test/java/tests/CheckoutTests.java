@@ -1,12 +1,21 @@
 package tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
 
+@Epic("SauceDemo E-Commerce")
+@Feature("Checkout")
 public class CheckoutTests extends BaseTest {
 
     @Test(description = "UC-1: Checkout Flow (one item)")
+    @Story("Single item checkout")
+    @Severity(SeverityLevel.CRITICAL)
     public void singleItemCheckoutTest() {
         String product = "Sauce Labs Backpack";
 
@@ -29,6 +38,8 @@ public class CheckoutTests extends BaseTest {
     }
 
     @Test(description = "UC-2: Checkout Flow (several items)")
+    @Story("Multiple items checkout with subtotal verification")
+    @Severity(SeverityLevel.CRITICAL)
     public void multipleItemsCheckoutTest() {
         String product1 = "Sauce Labs Backpack";
         String product2 = "Sauce Labs Bike Light";
